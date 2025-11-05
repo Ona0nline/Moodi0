@@ -12,4 +12,5 @@ public class AudioFeatures {
     private double tempo;
     private double danceability;
     private double energy;
+    private String genre;
 }

@@ -8,9 +8,7 @@ import moodio.indie.dev.externalAPIs.Spotify;
 import moodio.indie.dev.services.RetrievalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,12 +27,13 @@ public class RetrievalControllor {
 
 //    Defines what audio features mean to what colour
 //    Will make use of spotify api
-    @GetMapping("/moodio")
+    @PostMapping("/moodio")
     public ResponseEntity<?> retrieve(@RequestBody ColorDAO colorDAO) throws JsonProcessingException {
         AudioFeatures audioFeatures = retrievalService.audioFeatures(colorDAO.getColorId());
 //        Pass into spotify api to get songs with these features
         Spotify spotifyApi = new Spotify();
-        HashMap<String, Object> songs = spotifyApi.getSongsBasedOffOfAudioFeatures(audioFeatures);
+        System.out.println("Audio Features Retrieved: " + audioFeatures.getValence());
+        HashMap<String, Object> songs = spotifyApi.getSongsBasedOffOfAudioFeatures(audioFeatures, colorDAO.getColorId());
         return ResponseEntity.ok(songs);
     }
 
